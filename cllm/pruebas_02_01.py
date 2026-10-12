@@ -24,6 +24,10 @@ def prueba_1(tokenizar):
     r = tokenizar("  Mayúsculas   y\tminúsculas\n")
     assert r == ["Mayúsculas", "y", "minúsculas"], "No debes cambiar mayúsculas y debes quitar todo espacio en blanco"
 
+    r = tokenizar("¡Vida, nada me debes! ¿Estamos en paz?")
+    esperado = ["¡", "Vida", ",", "nada", "me", "debes", "!", "¿", "Estamos", "en", "paz", "?"]
+    assert r == esperado, f"¡ y ¿ deben quedar como tokens aparte. Se obtuvo {r}"
+
 
 def prueba_2(construir_vocabulario, preprocessed):
     v = construir_vocabulario(["the", "quick", "brown", "fox", "jumps", "over", "the", "lazy", "dog"])
@@ -55,9 +59,16 @@ def prueba_3(SimpleTokenizerV2, vocab):
     r = tok.decode([4, 6, 0, 3])
     assert r == "the <|unk|>, dog", f"Se esperaba 'the <|unk|>, dog' pero se obtuvo {r!r}"
 
+    vocab_es = {"¡": 0, "Vida": 1, ",": 2, "¿": 3, "paz": 4, "?": 5, "!": 6, "<|unk|>": 7}
+    tok = SimpleTokenizerV2(vocab_es)
+    r = tok.decode([0, 1, 2])
+    assert r == "¡Vida,", f"decode debe quitar el espacio después de ¡. Se obtuvo {r!r}"
+    r = tok.decode([3, 4, 5])
+    assert r == "¿paz?", f"decode debe quitar el espacio después de ¿ y el de antes de ?. Se obtuvo {r!r}"
+
     tok = SimpleTokenizerV2(vocab)
-    texto = "el sol acarició mi faz."
-    assert tok.decode(tok.encode(texto)) == texto, "decode(encode(texto)) debería recuperar el texto original"
+    for texto in ("el sol acarició mi faz.", "¡Vida, nada me debes!"):
+        assert tok.decode(tok.encode(texto)) == texto, f"decode(encode({texto!r})) debería recuperar el texto original"
 
 
 def prueba_4(GPTDatasetV1, texto=None):

@@ -9,6 +9,7 @@ Cada notebook contiene secciones marcadas con `TODO` que debes completar. Despu�
 | Notebook | Tema | Puntos |
 |---|---|---|
 | `02_01_preprocesamiento_texto_llm.ipynb` | Tokenización, BPE, *data loaders* y embeddings para un LLM | 6 |
+| `03_01_mecanismos_atencion.ipynb` | Self-attention, atención causal y multi-cabeza | 6 |
 
 La calificación y las utilidades compartidas viven en el paquete `cllm` (curso LLM), junto a los notebooks. Así cada práctica sólo contiene el ejercicio. No hace falta instalarlo: Jupyter lo encuentra si abres el notebook desde esta carpeta.
 
